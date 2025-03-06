@@ -1,10 +1,19 @@
+'use client'
+
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useRouter } from "next/navigation"
 
 
 function LoginTemplate() {
+
+    const router = useRouter()
+
+    const handleSubmit = () => {
+        router.push('/dashboard/biodata')
+    }
     return (
         <main className="w-screen h-screen flex items-center justify-center">
             <div className="w-[40%] h-[504px] bg-mainTeal flex items-center justify-center rounded-[8px]">
@@ -25,7 +34,7 @@ function LoginTemplate() {
                         </div>
 
                         <div className="flex items-center justify-between mt-6">
-                            <Button className="py-6 bg-mainGreen cursor-pointer text-white"> Sign In </Button>
+                            <Button className="py-6 bg-mainGreen cursor-pointer text-white" onClick={handleSubmit}> Sign In </Button>
 
                             <span className="cursor-pointer text-mainGreen text-sm font-bold">Forgot password</span>
                         </div>

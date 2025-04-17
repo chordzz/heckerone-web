@@ -1,17 +1,26 @@
 'use client'
 
 import { useState } from "react"
+import Image from "next/image"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
 
 import avatar from '@/../public/svgs/avatar-h.svg'
-import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 
 
 function CaptureBiometricsPageTemplate() {
     const [searchTerm, setSearchTerm] = useState('')
+
+    const router = useRouter()
+
+
+    const handleClick = () => {
+        router.push('/dashboard/capture/capture-biometrics')
+    }
 
     return(
         <div className="h-full bg-[#F9FAFB] flex items-center justify-center">
@@ -49,7 +58,7 @@ function CaptureBiometricsPageTemplate() {
                     )
                 }
 
-                <Button className="mt-14" disabled>Select & Begin Capture</Button>
+                <Button className="mt-14 bg-mainGreen" disabled={ !searchTerm } onClick={handleClick} >Select & Begin Capture</Button>
             </div>
 
         </div>

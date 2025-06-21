@@ -1,7 +1,7 @@
 'use client'
 
 import { getDepartmentsList, getFacultiesList, getSessionsList } from "@/lib/api/filterRequests";
-import { getAuthStatus } from "@/lib/utils";
+// import { getAuthStatus } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 

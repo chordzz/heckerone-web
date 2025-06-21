@@ -50,6 +50,7 @@ axiosInstance.interceptors.response.use( response =>
   }
 );
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handleApiError = async (error: any) => {
   try {
     let errorMessage;
@@ -76,12 +77,14 @@ export const handleApiError = async (error: any) => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handleApiSuccess = async (response: any) => {
   try {
     const data = response.data;
     const error = null;
     return { data, error };
   } catch (error) {
+    console.error(error)
     throw new Error('An unexpected error occurred');
   }
 };

@@ -63,6 +63,7 @@ function BiodataPageTemplate() {
         if(!loggedIn && isLoaded) {
             router.push('/')
         }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }, [loggedIn, isLoaded])
 
     const handleImportSubmit = (e: FormEvent<HTMLFormElement>) => {

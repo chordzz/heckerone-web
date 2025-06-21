@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { useUser } from "@/contexts/userContext"
 import { userLogin } from "@/lib/api/authRequest"
 import { apiErrResp } from "@/lib/types/apiResponseTypes"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import { FormEvent, useEffect, useState } from "react"
 import { toast } from "react-toastify"
@@ -16,8 +16,8 @@ import { toast } from "react-toastify"
 
 function LoginTemplate() {
 
-    const [ email, setEmail ] = useState('admin@unnbiometrics.com')
-    const [ password, setPassword ] = useState('Hecker12Pass')
+    const [ email, setEmail ] = useState('')
+    const [ password, setPassword ] = useState('')
 
     const { setUser, login } = useUser()
 
@@ -26,7 +26,7 @@ function LoginTemplate() {
     const loginMutation = useMutation({
         mutationKey: ['userLogin'],
         mutationFn: userLogin,
-        onSuccess: (data) => {
+        onSuccess: () => {
             // console.log("onSuccess: ", data)
             toast.success("Logged in...")
             setEmail('')
@@ -64,7 +64,7 @@ function LoginTemplate() {
 
             router.push('/dashboard/biodata')
         }
-    }, [loginMutation.isSuccess])
+    }, [loginMutation.isSuccess, setUser, router, login, loginMutation])
     
     return (
         <main className="w-screen h-screen flex items-center justify-center">

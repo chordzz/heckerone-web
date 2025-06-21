@@ -38,6 +38,8 @@ type BiodataStudent = {
     programme_type: string
 }
 
+// export const biodataStudents: BiodataStudent[] = []
+
 export const biodataStudents: BiodataStudent[] = [
     {
         matric_no: "123456",
@@ -135,6 +137,8 @@ type BiodataStaff = {
     faculty: string
     department: string
 }
+
+// export const biodataStaffs: BiodataStaff[] = []
 
 export const biodataStaffs: BiodataStaff[] = [
     {

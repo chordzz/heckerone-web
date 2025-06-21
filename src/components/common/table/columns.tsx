@@ -1,5 +1,7 @@
 "use client"
 
+import { StaffDataType } from "@/lib/types/staffTypes"
+import { StudentDataType } from "@/lib/types/studentTypes"
 import { ColumnDef } from "@tanstack/react-table"
 
 // This type is used to define the shape of our data.
@@ -28,7 +30,7 @@ export type BiodataStudent = {
     programme_type: string
 }
 
-export const columnsStudent: ColumnDef<BiodataStudent>[] = [
+export const columnsStudent: ColumnDef<StudentDataType>[] = [
     {
         id: "sn",
         header: "S/N",
@@ -54,13 +56,13 @@ export const columnsStudent: ColumnDef<BiodataStudent>[] = [
         accessorKey: "biometrics_status",
         header: "BIOMETRIC STATUS",
         cell: ({ row }) => {
-            if (row.original.biometrics_status === 'available') {
+            if (row.original.biometric_status === 'Available') {
                 return (
                     <div className="rounded-[6px] text-xs font-bold py-2 px-3 text-[#03543F] bg-[#DEF7EC] w-fit">
                         <span>Available</span>
                     </div>
                 )
-            } else if (row.original.biometrics_status === 'unavailable') {
+            } else if (row.original.biometric_status === 'Unavailable') {
                 return (
                     <div className="rounded-[6px] text-xs font-bold py-2 px-3 text-[#9B1C1C] bg-[#FDE8E8] w-fit">
                         <span>Unavailable</span>
@@ -126,7 +128,7 @@ export type BiodataStaff = {
     department: string
 }
 
-export const columnsStaff: ColumnDef<BiodataStaff>[] = [
+export const columnsStaff: ColumnDef<StaffDataType>[] = [
     {
         id: "sn",
         header: "S/N",
@@ -160,13 +162,13 @@ export const columnsStaff: ColumnDef<BiodataStaff>[] = [
         accessorKey: "biometric_status",
         header: "BIOMETRIC STATUS",
         cell: ({ row }) => {
-            if (row.original.biometric_status === 'available') {
+            if (row.original.biometric_status === 'Available') {
                 return (
                     <div className="rounded-[6px] text-xs font-bold py-2 px-3 text-[#03543F] bg-[#DEF7EC] w-fit">
                         <span>Available</span>
                     </div>
                 )
-            } else if (row.original.biometric_status === 'unavailable') {
+            } else if (row.original.biometric_status === 'Unavailable') {
                 return (
                     <div className="rounded-[6px] text-xs font-bold py-2 px-3 text-[#9B1C1C] bg-[#FDE8E8] w-fit">
                         <span>Unavailable</span>

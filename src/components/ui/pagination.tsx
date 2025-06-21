@@ -58,6 +58,7 @@ function PaginationLink({
           variant: isActive ? "outline" : "ghost",
           size,
         }),
+        // `${isActive ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}`,
         className
       )}
       {...props}

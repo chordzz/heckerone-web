@@ -21,16 +21,20 @@ function LoginTemplate() {
 
     const { setUser, login } = useUser()
 
+    
+
     const router = useRouter()
 
     const loginMutation = useMutation({
         mutationKey: ['userLogin'],
         mutationFn: userLogin,
         onSuccess: () => {
-            // console.log("onSuccess: ", data)
+
             toast.success("Logged in...")
             setEmail('')
             setPassword('')
+            login()
+            router.push('/dashboard/biodata')
         },
         onError: (err: apiErrResp) => {
             // console.log("Error: ", err)
@@ -48,6 +52,7 @@ function LoginTemplate() {
     }
 
     useEffect( () => {
+
         if (loginMutation.isSuccess) {
             const loginData = loginMutation.data?.data?.data
 
@@ -60,11 +65,12 @@ function LoginTemplate() {
             }
 
             setUser(userData)
-            login()
+            // login()
 
-            router.push('/dashboard/biodata')
+            // router.push('/dashboard/biodata')
+            // console.log("User logged in: ", userData)
         }
-    }, [loginMutation.isSuccess, setUser, router, login, loginMutation])
+    }, [loginMutation.isSuccess])
     
     return (
         <main className="w-screen h-screen flex items-center justify-center">

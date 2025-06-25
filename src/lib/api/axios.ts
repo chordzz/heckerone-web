@@ -13,13 +13,20 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use( config => {
-        const token = localStorage.getItem('heckerOneAccessToken');
+        // const token = localStorage.getItem('heckerOneAccessToken');
 
-        if (token) {
+        // if (token) {
+        //     config.headers.Authorization = `Bearer ${token}`;
+        // }
+
+        // return config
+        if (typeof window !== "undefined") {
+          const token = localStorage.getItem('heckerOneAccessToken');
+          if (token) {
             config.headers.Authorization = `Bearer ${token}`;
+          }
         }
-
-        return config
+        return config;
     },
     error => {
         return Promise.reject(error)

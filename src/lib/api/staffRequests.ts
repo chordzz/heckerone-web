@@ -29,7 +29,7 @@ export const getStaffList = async ({ params }: {params: StaffListParamsType}) =>
             page > 0 ? `page=${page}` : '',
             page_size > 0 ? `page_size=${page_size}` : ''
         ].filter(Boolean).join('&');  
-        const response = await axiosInstance.get(`/accounts/staffs?${queryParams}`)
+        const response = await axiosInstance.get(`/accounts/staffs/?${queryParams}`)
         
         return handleApiSuccess(response)
     } catch(error) {

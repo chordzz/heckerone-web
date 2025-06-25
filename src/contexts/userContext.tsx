@@ -1,7 +1,7 @@
 'use client'
 
 import { userDetailsType } from "@/lib/types/userTypes";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 type UserContextType = {
     user: userDetailsType | null;
@@ -41,8 +41,19 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
         }
     };
 
+    const values = useMemo(() => {
+        return {
+            user,
+            setUser,
+            loggedIn,
+            login,
+            logout,
+            isLoaded
+        }
+    }, [user, loggedIn, isLoaded]);
+
     return (
-        <UserContext.Provider value={{ user, setUser, loggedIn, login, logout, isLoaded }}>
+        <UserContext.Provider value={values}>
             { children }
         </UserContext.Provider>
     )

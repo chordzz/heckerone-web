@@ -34,7 +34,7 @@ function LoginTemplate() {
             setEmail('')
             setPassword('')
             login()
-            router.push('/dashboard/biodata')
+            // router.push('/dashboard/biodata')
         },
         onError: (err: apiErrResp) => {
             // console.log("Error: ", err)
@@ -67,8 +67,8 @@ function LoginTemplate() {
             setUser(userData)
             // login()
 
-            // router.push('/dashboard/biodata')
-            // console.log("User logged in: ", userData)
+            router.push('/dashboard/biodata')
+            // console.log("User logged in: ", loginData)
         }
     }, [loginMutation.isSuccess])
     

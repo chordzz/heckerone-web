@@ -60,7 +60,10 @@ function BiodataPageTemplate() {
 
 
     useEffect( () => {
+        // console.log('Logged in: ', loggedIn)
+        // console.log('Is loaded: ', isLoaded)
         if(!loggedIn && isLoaded) {
+            // console.log("Not logged in, redirecting to login page")
             router.push('/')
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

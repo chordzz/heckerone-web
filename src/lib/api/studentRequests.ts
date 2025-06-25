@@ -37,7 +37,7 @@ export const getStudentsList = async ({ params }: {params: StudentListParamsType
             page > 0 ? `page=${page}` : '',
             page_size > 0 ? `page_size=${page_size}` : ''
         ].filter(Boolean).join('&');  
-        const response = await axiosInstance.get(`/accounts/students?${queryParams}`)
+        const response = await axiosInstance.get(`/accounts/students/?${queryParams}`)
         
         return handleApiSuccess(response)
     } catch(error) {

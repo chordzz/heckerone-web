@@ -201,7 +201,9 @@ function BiodataPageTemplate() {
                 </DialogContent>
             </Dialog>
 
-            <CustomTable mode={mode} />
+            {
+                isLoaded && <CustomTable mode={mode} />
+            }
 
         </main>
     )

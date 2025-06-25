@@ -4,7 +4,9 @@ import { getStaffList } from "@/lib/api/staffRequests";
 import { StaffDataType } from "@/lib/types/staffTypes";
 import { getAuthStatus } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 
 type StaffContextType = {
     staff: StaffDataType[];
@@ -51,7 +53,9 @@ export const StaffContextProvider = ({ children }: { children: React.ReactNode }
     const [next_page, setNextPage] = useState<number | null>(0);
     const [previous_page, setPreviousPage] = useState<number | null>(0);
 
-    const { data, refetch } = useQuery({
+    const router = useRouter()
+
+    const { data, refetch, isError, error } = useQuery({
         queryKey: [
             'get_staff',
             page,
@@ -93,8 +97,28 @@ export const StaffContextProvider = ({ children }: { children: React.ReactNode }
         }
     }, [data]);
 
-    return (
-        <StaffContext.Provider value={{
+    useEffect(() => {
+            if (isError && error) {
+                // console.error("Error fetching students data: ", error);
+                const err = error as { status?: number };
+                if (err?.status === 401) {
+                    toast.error("Unauthorized access. Please log in again.");
+                    localStorage.removeItem('heckerOneAccessToken');
+                    // localStorage.removeItem('heckerOneUserLoggedIn');
+                    localStorage.setItem('heckerOneUserLoggedIn', 'false');
+                    router.push('/')
+
+                }
+                else if (err?.status === 404) {
+                    toast.error("No students found.");
+                } else {
+                    toast.error("An error occurred while fetching students data.");
+                }
+            }
+        }, [ isError, error ])
+
+    const values = useMemo(() => {
+        return {
             staff,
             setStaff,
             page,
@@ -120,7 +144,25 @@ export const StaffContextProvider = ({ children }: { children: React.ReactNode }
             previous_page,
             setPreviousPage,
             refetch
-        }}>
+        }
+    }, [
+        staff,
+        page,
+        page_size,
+        export_type,
+        search,
+        biometric_status,
+        gender,
+        faculty,
+        department,
+        total_entries,
+        next_page,
+        previous_page,
+        refetch
+    ])
+
+    return (
+        <StaffContext.Provider value={values}>
             {children}
         </StaffContext.Provider>
     );

@@ -4,8 +4,10 @@ import { getStudentsList } from "@/lib/api/studentRequests";
 import { StudentDataType } from "@/lib/types/studentTypes";
 import { getAuthStatus } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useUser } from "./userContext";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 
 type StudentsContextType = {
@@ -47,6 +49,7 @@ export const StudentsContext = createContext({} as StudentsContextType)
 
 export const StudentsContextProvider = ({ children }: { children: React.ReactNode }) => {
 
+    const router = useRouter()
     const { isLoaded, loggedIn } = useUser()
 
     const [ students, setStudents ] = useState<StudentDataType[]>([])
@@ -68,7 +71,7 @@ export const StudentsContextProvider = ({ children }: { children: React.ReactNod
     const [ next_page, setNextPage ] = useState<number | null>(0);
     const [ previous_page, setPreviousPage ] = useState<number | null>(0);
 
-    const { data, refetch } = useQuery({
+    const { data, refetch, isError, error } = useQuery({
         queryKey: ['get_students', page, page_size, export_type, search, biometric_status, gender, mode_of_entry, year, entry_session, faculty, department, programme_type, total_entries, next_page, previous_page],
         queryFn: () =>
             getStudentsList({
@@ -101,6 +104,25 @@ export const StudentsContextProvider = ({ children }: { children: React.ReactNod
             setPreviousPage(data.data?.data?.previous);
         }
     }, [ data ])
+
+    useEffect(() => {
+        if (isError && error) {
+            // console.error("Error fetching students data: ", error);
+            const err = error as { status?: number };
+            if (err?.status === 401) {
+                toast.error("Unauthorized access. Please log in again.");
+                localStorage.removeItem('heckerOneAccessToken');
+                // localStorage.removeItem('heckerOneUserLoggedIn');
+                localStorage.setItem('heckerOneUserLoggedIn', 'false');
+                router.push('/');
+            }
+            else if (err?.status === 404) {
+                toast.error("No students found.");
+            } else {
+                toast.error("An error occurred while fetching students data.");
+            }
+        }
+    }, [ isError, error ])
     
 
     // const { data } = useQuery({
@@ -118,8 +140,8 @@ export const StudentsContextProvider = ({ children }: { children: React.ReactNod
     //     }
     // }, [ data ])
 
-    return (
-        <StudentsContext.Provider value={{
+    const values = useMemo(() => {
+        return {
             students,
             setStudents,
             page,
@@ -152,7 +174,28 @@ export const StudentsContextProvider = ({ children }: { children: React.ReactNod
             previous_page,
             setPreviousPage,
             refetch
-        }}>
+        }
+    }, [
+        students,
+        page,
+        page_size,
+        export_type,
+        search,
+        biometric_status,
+        gender,
+        mode_of_entry,
+        year,
+        entry_session,
+        faculty,
+        department,
+        programme_type,
+        total_entries,
+        next_page,
+        previous_page,
+        refetch
+    ])
+    return (
+        <StudentsContext.Provider value={values}>
             {children}
         </StudentsContext.Provider>
     )

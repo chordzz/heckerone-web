@@ -17,7 +17,7 @@ export const UserContext = createContext({} as UserContextType)
 
 export const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [ user, setUser ] = useState<userDetailsType | null>(null)
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [ isLoaded, setIsLoaded ] = useState(false);
     const [ loggedIn, setLoggedIn ] = useState(false)
 
     useEffect(() => {

@@ -13,23 +13,23 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use( config => {
-        // const token = localStorage.getItem('heckerOneAccessToken');
+        const token = localStorage.getItem('heckerOneAccessToken');
 
-        // if (token) {
-        //     config.headers.Authorization = `Bearer ${token}`;
-        // }
-
-        // return config
-        if (typeof window !== "undefined") {
-          const token = localStorage.getItem('heckerOneAccessToken');
-          if (token) {
+        if (token) {
             config.headers.Authorization = `Bearer ${token}`;
-          }
         }
-        return config;
+
+        return config
+        // if (typeof window !== "undefined") {
+        //   const token = localStorage.getItem('heckerOneAccessToken');
+        //   if (token) {
+        //     config.headers.Authorization = `Bearer ${token}`;
+        //   }
+        // }
+        // return config;
     },
     error => {
-        return Promise.reject(error)
+      return Promise.reject(error)
     }
 )
 
@@ -46,16 +46,17 @@ axiosInstance.interceptors.request.use((req) => {
 axiosInstance.interceptors.response.use( response => 
   response,
   async error => {
-    if (error.response.status === 401) {
-      // const newToken = await refreshToken();
-      // localStorage.setItem('authToken', newToken);
+    // if (error.response.status === 401) {
+    //   // const newToken = await refreshToken();
+    //   // localStorage.setItem('authToken', newToken);
 
-      localStorage.removeItem('heckerOneAccessToken');
-      localStorage.removeItem('heckerOneUserLoggedIn');
+    //   // localStorage.removeItem('heckerOneAccessToken');
+    //   // localStorage.removeItem('heckerOneUserLoggedIn');
+    //   // localStorage.setItem('heckerOneUserLoggedIn', 'false');
 
-      // Retry the original request
-      return axios(error.config);
-    }
+    //   // Retry the original request
+    //   return axios(error.config);
+    // }
     return Promise.reject(error);
   }
 );
@@ -68,14 +69,15 @@ export const handleApiError = async (error: any) => {
     if (error.status === 401) {
         errorMessage = error.response?.data?.data?.detail || error.response?.data?.detail || error.response?.data?.message || 'An unexpected error occurred'
         const data = null;
-        if (window.location.pathname !== '/') {
-          window.location.href = '/';
-        }  throw { error: errorMessage, data };
+        // if (window.location.pathname !== '/') {
+        //   window.location.href = '/';
+        // }
+        throw { error: errorMessage, data, status: error.status };
     }
 
     errorMessage = error.response?.data?.detail  || error.response?.data?.message || 'An  unexpected error occurred';
     const data = null;
-    throw { error: errorMessage, data };
+    throw { error: errorMessage, data, status: error.status };
 
   } catch (error) {
     throw (error);

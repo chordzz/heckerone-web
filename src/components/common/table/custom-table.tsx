@@ -1,6 +1,6 @@
 'use client'
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {  Search, SlidersVertical, X } from "lucide-react";
 
@@ -40,6 +40,7 @@ function CustomTable({ mode }: CustomTableType) {
         setPage,
         search,
         setSearch,
+        refetch
     } = useStudents()
 
     const { 
@@ -51,7 +52,8 @@ function CustomTable({ mode }: CustomTableType) {
         page_size: staff_page_size,
         setPage: setStaffPage,
         search: staff_search,
-        setSearch: setStaffSearch
+        setSearch: setStaffSearch,
+        refetch: staffRefetch
     } = useStaff()
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +72,20 @@ function CustomTable({ mode }: CustomTableType) {
     const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
     // console.log(page, page_size, pageNumbers)
+
+    useEffect(() => {
+        if (mode === 'students') {
+            if (page > totalPages) {
+                setPage(1);
+            }
+            refetch();
+        } else if (mode === 'staff') {
+            if (staff_page > totalPages) {
+                setStaffPage(1);
+            }
+            staffRefetch();
+        }
+    }, [mode])
 
     return (
         <div className="bg-white rounded-[8px] max-h-[776px]">
